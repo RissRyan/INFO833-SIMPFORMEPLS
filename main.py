@@ -56,16 +56,16 @@ utils.printGraph(ring)
 
 ### ENVOIE ET RECEPTION DE MESSAGES
 
-# Chaque nœud envoie un message à son voisin de droite
+# Chaque nœud envoie un message à son voisin de droite (suivant)
 for i in range(len(ring)):
     sender = ring[i]
     receiver = ring[i].getNext()
-    sender.send_message(receiver.getID(), f'COUCOU')
+    sender.sendMessage(receiver.getID(), f'What\'s up')
 
-# Chaque nœud reçoit un message de son voisin de gauche
+# Chaque nœud reçoit un message de son voisin de gauche (précédent)
 for i in range(len(ring)):
     node = ring[i]
-    env.process(node.receive_messages())
+    env.process(node.receiveMessages())
 
 env.run(until=env.now + 10)
 

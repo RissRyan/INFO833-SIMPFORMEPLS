@@ -8,7 +8,7 @@ Les noeuds seront capables de recevoir et d'envoyer des messages aux autres noeu
 
 On va utiliser Python, la librairie Simpy, Matplotlib et NetworkX pour implémenter et visualiser ce réseau.
 
-## Etape 1 - Mis en place du réseau
+## Etape 1 - Mise en place du réseau
 
 On doit d'avoir implémenter le système de noeud et l'ajout et le retrait de ces noeuds.
 
@@ -29,18 +29,33 @@ Le fichier main.py détaille l'utilisation de ces méthodes et permet d'afficher
 ### Anneau de base : noeuds avec IDs 1, 4 et 7
 
 <p align="center"> 
-<img src="img\loop1.PNG" height=400>
+<img src="img\loop1.PNG" height=300>
 </p>
 
 ### Ajout du noeud 6 
 
 <p align="center"> 
-<img src="img\loop2.png" height=400>
+<img src="img\loop2.PNG" height=300>
 </p>
 
 ### On retire le noeud 1 
 
 <p align="center"> 
-<img src="img\loop3.png" height=400>
+<img src="img\loop3.PNG" height=300>
 </p>
 
+## Etape 2 - Envoie et réception de messages
+
+C'est pour la gestion des messages qu'on commence à utiliser simpy.
+
+En effet, simpy permet la gestion "facile" d'events. La réception et l'envoie de messages peuvent être considérés comme des events.
+
+Il y a aussi l'utilisation d'un pipe qui fait office de cannal de discussion.
+
+Voici un exemple présent dans le fichier main.py : 
+
+<p align="center"> 
+<img src="img\messages.PNG" height=300>
+</p>
+
+Ici chaque noeud envoie un message au noeud suivant et attend un message de son noeud précédent.

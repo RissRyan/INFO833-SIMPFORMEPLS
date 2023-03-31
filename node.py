@@ -77,13 +77,13 @@ class Node:
         self.nextNode.prevNode = self.prevNode
         ring.remove(self)
 
-    def send_message(self, dest_id, message):
-        print(f'[{self.env.now}][{self.id}][SENDING MESSAGE] {message} to {dest_id}')
-        self.pipe.put((dest_id, message))
+    def sendMessage(self, destID, message):
+        print(f'[{self.env.now}] - {self.id} envoie : {message} à {destID}')
+        self.pipe.put((destID, message))
     
-    def receive_messages(self):
+    def receiveMessages(self):
         while True:
             message = yield self.pipe.get()
-            yield self.env.timeout(random.randint(1, 4))
-            sender_id, message_content = message
-            print(f'[{self.env.now}][{self.id}][RECEIVING MESSAGE] {message_content} from {sender_id}')
+            yield self.env.timeout(random.randint(1, 2))
+            senderID, messageContent = message
+            print(f'[{self.env.now}] - {self.id} a reçu :  {messageContent} de {senderID}')
