@@ -29,7 +29,7 @@ Le fichier main.py détaille l'utilisation de ces méthodes et permet d'afficher
 ### Anneau de base : noeuds avec IDs 1, 4 et 7
 
 <p align="center"> 
-<img src="img\loop1.png" height=400>
+<img src="img\loop1.PNG" height=400>
 </p>
 
 ### Ajout du noeud 6 
