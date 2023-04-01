@@ -34,7 +34,7 @@ node2.setNext(node3)
 node3.setPrev(node2)
 node3.setNext(node1)
 
-# A noter qu'on pourrait utiliser ce code et ne pas append node2 et node3 :
+# A noter qu'on pourrait utiliser ce code :
 """node2.join(ring)
 node3.join(ring)"""
 
@@ -45,7 +45,9 @@ utils.printGraph(ring)
 # On rajoute un nouveau noeud d'ID 6
 
 newNode = Node(env, pipe, 6)
-newNode.join(ring)
+randomNode = ring[random.randint(0, len(ring) - 1)]
+randomNode.join(newNode)
+ring.append(newNode)
 
 utils.printGraph(ring)
 
@@ -60,12 +62,32 @@ utils.printGraph(ring)
 for i in range(len(ring)):
     sender = ring[i]
     receiver = ring[i].getNext()
-    sender.sendMessage(receiver.getID(), f'What\'s up')
+    #sender.sendMessage(receiver.getID(), f'What\'s up')
+
+# Pour tester pour des chemins plus long
+
+node2.sendMessage(7, "test")
+newNode.sendMessage(6, "test")
+
 
 # Chaque nœud reçoit un message de son voisin de gauche (précédent)
 for i in range(len(ring)):
-    node = ring[i]
-    env.process(node.receiveMessages())
+    env.process(ring[i].receiveMessages())
 
-env.run(until=env.now + 10)
+
+### AJOUT DE DONNEES
+
+def testData():
+        newNode.put(70)
+        yield env.timeout(random.randint(1, 3))
+        newNode.get(70)
+        newNode.get(552)
+
+env.process(testData())
+
+env.run(until=env.now + 100)
+
+for i in range(len(ring)):
+    print(ring[i].id)
+    ring[i].printDataIDs()
 

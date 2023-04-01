@@ -20,7 +20,7 @@ En méthode il y a bien sûr le constructeur et les setters/getters mais aussi l
 
 La méthode join() cherche un noeud dans l'anneau auquel rattacher le nouveau noeud. Le trouvé sera le noeud précedent du nouveau noeud.
 
-On fois que ce noeud est trouvé on appelle la méthode insert() qui permetra de casser l'ancienne liason et d'insérer le nouveau noeud entre les deux noeuds (le noeud trouvé et son noeud suivant original).
+On fois que ce noeud est trouvé on appelle la méthode insertNode() qui permetra de casser l'ancienne liason et d'insérer le nouveau noeud entre les deux noeuds (le noeud trouvé et son noeud suivant original).
 
 La méthode leave() permet de retirer un noeud de l'anneau et de faire en sorte que ces noeuds voisins deviennent en relation pour le pas casser la boucle.
 
@@ -52,6 +52,8 @@ En effet, simpy permet la gestion "facile" d'events. La réception et l'envoie d
 
 Il y a aussi l'utilisation d'un pipe qui fait office de cannal de discussion.
 
+On utilise les méthodes sendMessage() et receiveMessages() de la classe Node.
+
 Voici un exemple présent dans le fichier main.py : 
 
 <p align="center"> 
@@ -59,3 +61,47 @@ Voici un exemple présent dans le fichier main.py :
 </p>
 
 Ici chaque noeud envoie un message au noeud suivant et attend un message de son noeud précédent.
+
+Il y a aussi un message du noeud 4 au noeud 7 pour tester avec des chemins plus longs et un message du noeud 6 à lui-même.
+
+## Etape 3 - Stockage de données
+
+Pour le stockage des données et leurs extractions on procède comme ceci.
+
+### La méthode put()
+
+On crée d'abord une méthode findNodeForData() qui trouve un noeud ayant l'identifiant le plus proche de l'identifiant de la donnée.
+
+Cette fonction ressemble énormément à la méthode join() à la différence qu'on autorise le fait que l'identifiant du noeud soit le même que celui de la donnée.
+
+Ensuite une fois qu'on a trouvé le noeud auquel rattacher la donnée on envoie un message à ce noeud de la forme "PUT dataID replication".
+
+Le noeud reçoit le message et le traite. Il enregistre le dataID et si la réplication > 0 il envoie le message à ses voisins proches en décrémentant la valeur de réplication.
+
+Comme le demande l'énoncé la valeur de réplication vaut initialement 3.
+
+### La méthode get()
+
+On commence d'abord à savoir si on a la donnée.
+
+Si ce n'est pas le cas alors on demande au prochain noeud si il a grâce à un message du type "GET dataID getterID" et ainsi de suite jusqu'à trouver un noeud ayant la donnée.
+
+Si le noeud initial reçoit ce message alors on est sûr que la donnée n'existe pas.
+
+Le fichier main.py a une fonction testData() permettant de tester ces méthodes.
+
+## Etape 4 - Optimisation
+
+On peut optimiser notre code en adoptant un point de vue général de l'anneau au lieu de faire du proche en proche.
+
+En effet, on peut créer des méthodes prenant en paramètres l'ensemble des noeuds de l'anneau au lieu d'envoyer des requêtes de proche en proche.
+
+Pour ce qui est du "piggybacking" j'ai l'impression d'avoir fait cela grâce à la méthode get() en donnant l'ID du getter.
+
+## Les difficultés rencontrées
+
+La principale difficulté rencontré a été simpy.
+
+Premièrement pour le canal de discussion. J'ai pris beaucoup de temps à comprendre comment faire marcher simpy.Store().
+
+Ensuite ça a été la gestion du temps. En effet, j'ai eu beaucoup de bugs lors de mes différentes simulations. J'ai pris un peu de temps à comprendre que cela était dû au faite que certains events se passaient avant d'autres.
